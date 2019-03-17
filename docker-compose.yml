@@ -1,0 +1,6 @@
+node:
+  build: .
+  working_dir: /home/node/app
+  volumes:
+    - ./:/home/node/app
+  command: "cp -r /app/dist /home/node/app/dist"

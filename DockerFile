@@ -1,0 +1,9 @@
+FROM node:8
+
+RUN npm install cnpm -g
+
+ADD . /app/
+WORKDIR /app
+
+RUN cnpm install
+RUN npm run build
