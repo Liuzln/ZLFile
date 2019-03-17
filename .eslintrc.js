@@ -14,10 +14,12 @@ module.exports = {
 	],
 	// add your custom rules here
 	rules: {
+        // 禁用 tab
+        'no-tabs': 0,
         // 强制使用一致的缩进, 4个空格
         'indent': ["error", 4],
-        // 语句强制分号结尾
-        "semi": ["always"], 
+        //语句强制分号结尾
+        "semi": [2, "always"],
         // see https://github.com/eslint/eslint/issues/6274
         'generator-star-spacing': 'off',
         'babel/generator-star-spacing': 'off',
