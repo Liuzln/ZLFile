@@ -18,19 +18,20 @@ module.exports = appInfo => {
     // add your middleware config here
     config.middleware = [];
 
-    // 数据库配置
-    config.sequelize = {
-        dialect: 'mysql',
-        host: '127.0.0.1',
-        port: 3306,
-        database: 'egg-sequelize-doc-default',
-    };
-
     // add your user config here
     const userConfig = {
         // myAppName: 'egg',
     };
 
+    config.validate = {
+        enable: true,
+        package: 'egg-validate',
+    };
+
+    config.mongoose = {
+        url: 'mongodb://127.0.0.1/example',
+        options: {},
+    };
     return {
         ...config,
         ...userConfig,

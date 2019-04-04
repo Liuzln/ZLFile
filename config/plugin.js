@@ -6,10 +6,12 @@ module.exports = {
     // static: {
     //   enable: true,
     // }
-
-    // sequelize ORM
-    sequelize: {
+    validate: {
         enable: true,
-        package: 'egg-sequelize',
+        package: 'egg-validate',
+    },
+    mongoose: {
+        enable: true,
+        package: 'egg-mongoose',
     },
 };
