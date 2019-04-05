@@ -12,3 +12,7 @@ run/
 *.un~
 typings/
 .nyc_output/
+
+# config
+config/config.local.js
+config/config.prod.js
