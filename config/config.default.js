@@ -23,6 +23,13 @@ module.exports = appInfo => {
     // myAppName: 'egg',
   };
 
+  // close csrf
+  config.security = {
+    csrf: {
+      enable: false,
+    },
+  };
+
   config.validate = {
     enable: true,
     package: 'egg-validate',
@@ -32,6 +39,16 @@ module.exports = appInfo => {
     url: 'mongodb://127.0.0.1/example',
     options: {},
   };
+
+  config.redis = {
+    client: {
+      port: 6379, // Redis port
+      host: '127.0.0.1', // Redis host
+      password: '12345',
+      db: 0,
+    },
+  };
+
   return {
     ...config,
     ...userConfig,
