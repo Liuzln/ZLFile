@@ -35,6 +35,7 @@ class JwtService extends Service {
     // 储存密钥到缓存
     const hash = REDIS_USER_TOKEN_HASH_PREFIX + user._id;
     await ctx.app.redis.hset(hash, REDIS_USER_TOKEN_FIELD, secret);
+    await ctx.app.redis.expire(hash, 60 * 60 * 48);
     return token;
   }
 
@@ -46,28 +47,50 @@ class JwtService extends Service {
     const { ctx } = this;
     // 解析 jwtToken 获取 payload
     const decoded = jwt.decode(token, { complete: true });
-    const payload = decoded.payload;
-    console.log(payload);
-    // 从缓存获取密钥
-    const hash = REDIS_USER_TOKEN_HASH_PREFIX + payload.userId;
-    const secret = await ctx.app.redis.hget(hash, REDIS_USER_TOKEN_FIELD);
-    try {
-      // 根据 jwtToken 和 secret 检验是否完整
-      const decoded = jwt.verify(token, secret);
-      return decoded;
-    } catch (err) {
-      this.logger.error(err);
+    if (decoded) {
+      const payload = decoded.payload;
+      // 从缓存获取密钥
+      const hash = REDIS_USER_TOKEN_HASH_PREFIX + payload.userId;
+      const secret = await ctx.app.redis.hget(hash, REDIS_USER_TOKEN_FIELD);
+      if (!secret) {
+        return null;
+      }
+      try {
+        // 根据 jwtToken 和 secret 检验是否完整
+        const decoded = jwt.verify(token, secret);
+        return decoded;
+      } catch (err) {
+        this.logger.error(err);
+        return null;
+      }
+    } else {
       return null;
     }
   }
 
   /**
-   * @description 解析获取 jwtToken 的 header 和 payload
+   * @description 通过 jwtToken 解析获取 header 和 payload
    * @param { String } token jwtToken
    */
   async decodeJwtToken(token) {
     const decoded = jwt.decode(token, { complete: true });
     return decoded;
+  }
+
+  /**
+   * @description 作废 jwtToken
+   * @param { String } token jwtToken
+   */
+  async invalidJwtToken(token) {
+    const { ctx } = this;
+    // 解析 jwtToken 获取 payload
+    const decoded = jwt.decode(token, { complete: true });
+    if (decoded) {
+      const payload = decoded.payload;
+      // 从缓存获取密钥
+      const hash = REDIS_USER_TOKEN_HASH_PREFIX + payload.userId;
+      await ctx.app.redis.hdel(hash, REDIS_USER_TOKEN_FIELD);
+    }
   }
 }
 

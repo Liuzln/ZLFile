@@ -94,7 +94,17 @@ class UserController extends Controller {
   // 用户登出
   async signout() {
     const { ctx } = this;
-    ctx.body = 'hi, signout';
+    const token = ctx.request.header.authorization;
+    if (token) {
+      try {
+        await ctx.service.jwt.invalidJwtToken(token);
+      } catch (err) {
+        this.logger.error(err);
+      }
+    }
+    ctx.body = {
+      message: '登出成功',
+    };
   }
 }
 
