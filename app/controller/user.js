@@ -1,5 +1,6 @@
 'use strict';
 
+const crypto = require('crypto');
 const Controller = require('egg').Controller;
 
 class UserController extends Controller {
@@ -17,19 +18,33 @@ class UserController extends Controller {
       });
       if (!user) {
         ctx.body = {
-          message: '用户不存在',
+          message: '用户名或邮箱不存在',
         };
         ctx.status = 401;
         return;
       }
-      if (user.password) {
+      const password = crypto.createHash('md5').update(body.password).digest('hex');
+      if (password !== user.password) {
         ctx.body = {
-          message: '用户不存在',
+          message: '密码错误',
         };
         ctx.status = 401;
         return;
       }
-      ctx.body = 'hi, signin';
+      // 生成 jwtToken
+      const token = await ctx.service.jwt.generateJWTByUser(user);
+      ctx.body = {
+        user: {
+          id: user._id,
+          userName: user.userName,
+          email: user.email,
+          countryCode: user.countryCode,
+          mobile: user.mobile,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+        },
+        token,
+      };
     } catch (err) {
       this.logger.error(err);
     }
