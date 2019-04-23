@@ -52,15 +52,16 @@ class JwtService extends Service {
       // 从缓存获取密钥
       const hash = REDIS_USER_TOKEN_HASH_PREFIX + payload.userId;
       const secret = await ctx.app.redis.hget(hash, REDIS_USER_TOKEN_FIELD);
-      if (!secret) {
-        return null;
-      }
-      try {
-        // 根据 jwtToken 和 secret 检验是否完整
-        const decoded = jwt.verify(token, secret);
-        return decoded;
-      } catch (err) {
-        this.logger.error(err);
+      if (secret) {
+        try {
+          // 根据 jwtToken 和 secret 检验是否完整
+          const decoded = jwt.verify(token, secret);
+          return decoded;
+        } catch (err) {
+          this.logger.error(err);
+          return null;
+        }
+      } else {
         return null;
       }
     } else {

@@ -10,10 +10,10 @@ class UserService extends Service {
   async create(user) {
     const { ctx } = this;
     const createUser = await ctx.model.User.create({
-      userName: user.userName,
+      user_name: user.user_name,
       password: crypto.createHash('md5').update(user.password).digest('hex'),
       email: user.email,
-      countryCode: user.countryCode,
+      country_code: user.country_code,
       mobile: user.mobile,
     });
     return createUser;
@@ -25,11 +25,11 @@ class UserService extends Service {
     return user;
   }
 
-  async findByUserNameOrEmail({ userName, email }) {
+  async findByUserNameOrEmail({ user_name, email }) {
     const { ctx } = this;
     const user = await ctx.model.User.findOne({
       $or: [
-        { userName },
+        { user_name },
         { email },
       ],
     });

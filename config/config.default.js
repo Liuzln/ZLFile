@@ -35,9 +35,13 @@ module.exports = appInfo => {
     package: 'egg-validate',
   };
 
-  config.mongoose = {
-    url: 'mongodb://127.0.0.1/zlfile',
-    options: {},
+  config.sequelize = {
+    dialect: 'mysql',
+    database: 'zlfile_development',
+    host: '127.0.0.1',
+    port: 3306,
+    username: 'root',
+    password: 'root',
   };
 
   config.redis = {

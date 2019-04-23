@@ -106,6 +106,29 @@ class UserController extends Controller {
       message: '登出成功',
     };
   }
+
+  // 用户信息
+  async info() {
+    const { ctx } = this;
+    const id = ctx.params.id;
+    const user = ctx.service.user.findById(id);
+    ctx.body = {
+      user: {
+        id: user._id,
+        userName: user.userName,
+        email: user.email,
+        countryCode: user.countryCode,
+        mobile: user.mobile,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+    };
+  }
+
+  // TODO: 管理员功能 更改密码 提交旧密码 新密码
+  // TODO: 验证邮箱
+  // TODO: 修改密码 展示已绑定邮箱地址 点击发送 根据邮箱地址 储存URL信息到缓存 发送URL邮件给邮箱
+  // TODO: 找回密码 展示已绑定邮箱地址 点击发送 根据邮箱地址 储存URL信息到缓存 发送URL邮件给邮箱
 }
 
 module.exports = UserController;

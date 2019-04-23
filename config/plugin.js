@@ -10,9 +10,9 @@ module.exports = {
     enable: true,
     package: 'egg-validate',
   },
-  mongoose: {
+  sequelize: {
     enable: true,
-    package: 'egg-mongoose',
+    package: 'egg-sequelize',
   },
   redis: {
     enable: true,

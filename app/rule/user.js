@@ -2,7 +2,7 @@
 
 module.exports = () => {
   const signinRule = {
-    userName: {
+    user_name: {
       type: 'string',
       required: true,
       allowEmpty: false,
@@ -17,7 +17,7 @@ module.exports = () => {
     },
   };
   const signupRule = {
-    userName: {
+    user_name: {
       type: 'string',
       required: true,
       allowEmpty: false,
@@ -35,13 +35,13 @@ module.exports = () => {
       required: true,
       allowEmpty: false,
     },
-    countryCode: {
+    country_code: {
       type: 'string',
       required: true,
       allowEmpty: false,
     },
     mobile: {
-      type: 'number',
+      type: 'string',
       required: true,
       allowEmpty: false,
     },
